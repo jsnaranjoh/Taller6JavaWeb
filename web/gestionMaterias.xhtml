@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Materias</title>
+            </f:facet>
+            <style>
+                .ui-menu {
+                    width: 140px;
+                }
+            </style>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="50" resizable="true" closable="true" collapsible="true">
+                    GESTIÓN DE MATERIAS
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" header="Colapsar" collapsible="true">
+                    <h:form>
+                        <p:menu>
+                            <p:submenu label="Menú">
+                                <p:menuitem value="Carreras" url="../faces/gestionCarreras.xhtml" />
+                                <p:menuitem value="Docentes" url="../faces/gestionDocentes.xhtml" />
+                                <p:menuitem value="Materias" url="../faces/gestionMaterias.xhtml" />
+                                <p:menuitem value="Estudiantes" url="../faces/gestionEstudiantes.xhtml" />
+                                <p:menuitem value="Matrículas" url="../faces/gestionMatriculas.xhtml" />
+                            </p:submenu>
+                        </p:menu>
+                        <p:commandButton value="Cerrar Sesión" action="#{sesionVista.cerrarSesion_action}"/>
+                    </h:form>     
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:form id="formulario">
+                        <p:growl id="growl" showDetail="true" sticky="true" />
+                        <p:panelGrid columns="4">
+                            <h:outputText value="Número"/>
+                            <p:inputText id="txtNumero" binding="#{materiaVista.txtNumero}" />
+
+                            <h:outputText value="Nombre"/>
+                            <p:inputText id="txtNombre" binding="#{materiaVista.txtNombre}" />
+
+                            <h:outputText value="Créditos"/>
+                            <p:inputText id="txtCreditos" binding="#{materiaVista.txtCreditos}" />
+
+                            <h:outputText value="Carrera"/>
+                            <p:selectOneMenu id="cmbCarreras" binding="#{materiaVista.cmbCarreras}">
+                                <f:selectItem itemValue="0" itemLabel="Seleccione"/>
+                                <f:selectItems value="#{materiaVista.itemsCarreras}"/>
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                        <p:panelGrid columns="4">
+                            <p:commandButton value="Registrar" binding="#{materiaVista.btnRegistrar}" action="#{materiaVista.action_registrar()}" update=":formulario"/> 
+                            <p:commandButton value="Modificar" binding="#{materiaVista.btnModificar}" action="#{materiaVista.action_modificar()}" update=":formulario"/>
+                            <p:commandButton value="Eliminar" binding="#{materiaVista.btnEliminar}" action="#{materiaVista.action_eliminar()}" update=":formulario"/>
+                            <p:commandButton value="Limpiar" binding="#{materiaVista.btnLimpiar}" action="#{materiaVista.limpiar()}" update=":formulario"/>
+                        </p:panelGrid>
+                        <p:dataTable id="eventsDT" var="materia" value="#{materiaVista.listaMaterias}" selectionMode="single" selection="#{materiaVista.selectedMateria}" rowKey="#{materia.numeromateria}">
+                            <f:facet name="header">
+                                Materias
+                            </f:facet>
+                            <p:ajax event="rowSelect" listener="#{materiaVista.onRowSelect}" update=":formulario" />
+                            <p:column headerText="Número">
+                                <h:outputText value="#{materia.numeromateria}" />
+                            </p:column>
+
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{materia.nombremateria}" />
+                            </p:column>
+
+                            <p:column headerText="Créditos">
+                                <h:outputText value="#{materia.creditosmateria}" />
+                            </p:column>
+
+                            <p:column headerText="Carrera">
+                                <h:outputText value="#{materia.numerocarrera.nombrecarrera}" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+

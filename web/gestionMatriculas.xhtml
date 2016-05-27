@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Matrículas</title>
+            </f:facet>
+            <style>
+                .ui-menu {
+                    width: 140px;
+                }
+            </style>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="50" resizable="true" closable="true" collapsible="true">
+                    GESTIÓN DE MATRÍCULAS
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" header="Colapsar" collapsible="true">
+                    <h:form>
+                        <p:menu>
+                            <p:submenu label="Menú">
+                                <p:menuitem value="Carreras" url="../faces/gestionCarreras.xhtml" />
+                                <p:menuitem value="Docentes" url="../faces/gestionDocentes.xhtml" />
+                                <p:menuitem value="Materias" url="../faces/gestionMaterias.xhtml" />
+                                <p:menuitem value="Estudiantes" url="../faces/gestionEstudiantes.xhtml" />
+                                <p:menuitem value="Matrículas" url="../faces/gestionMatriculas.xhtml" />
+                            </p:submenu>
+                        </p:menu>
+                        <p:commandButton value="Cerrar Sesión" action="#{sesionVista.cerrarSesion_action}"/>
+                    </h:form>     
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:form id="formulario">
+                        <p:growl id="growl" showDetail="true" sticky="true" />
+                        <p:panelGrid columns="1">
+                            <p:fileUpload label="Importar Matrículas" invalidFileMessage="El archivo debe ser de extensión .xls" fileUploadListener="#{matriculaVista.handleFileUpload}" mode="advanced"  update="formulario" auto="true" allowTypes="/(\.|\/)(xls)$/"/>
+                        </p:panelGrid>
+                            <p:panelGrid columns="4">
+                            <h:outputText value="Estudiante"/>
+                            <p:selectOneMenu id="cmbEstudiantes" binding="#{matriculaVista.cmbEstudiantes}">
+                                <f:selectItem itemValue="Seleccione" itemLabel="Seleccione"/>
+                                <f:selectItems value="#{matriculaVista.itemsEstudiantes}"/>
+                            </p:selectOneMenu>
+
+                            <h:outputText value="Materia"/>
+                            <p:selectOneMenu id="cmbMaterias" binding="#{matriculaVista.cmbMaterias}">
+                                <f:selectItem itemValue="Seleccione" itemLabel="Seleccione"/>
+                                <f:selectItems value="#{matriculaVista.itemsMaterias}"/>
+                            </p:selectOneMenu>
+
+                            <h:outputText value="Nota"/>
+                            <p:inputText id="txtNota" binding="#{matriculaVista.txtNota}" />
+
+                            <h:outputText value="Estado"/>
+                            <p:selectOneMenu id="cmbEstados" binding="#{matriculaVista.cmbEstados}">
+                                <f:selectItem itemValue="0" itemLabel="Seleccione"/>
+                                <f:selectItem itemValue="APROBADO" itemLabel="APROBADO"/>
+                                <f:selectItem itemValue="DESAPROBADO" itemLabel="DESAPROBADO"/>
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                        <p:panelGrid columns="4">
+                            <p:commandButton value="Registrar" binding="#{matriculaVista.btnRegistrar}" action="#{matriculaVista.action_registrar()}" update=":formulario"/> 
+                            <p:commandButton value="Modificar" binding="#{matriculaVista.btnModificar}" action="#{matriculaVista.action_modificar()}" update=":formulario"/>
+                            <p:commandButton value="Eliminar" binding="#{matriculaVista.btnEliminar}" action="#{matriculaVista.action_eliminar()}" update=":formulario"/>
+                            <p:commandButton value="Limpiar" binding="#{matriculaVista.btnLimpiar}" action="#{matriculaVista.limpiar()}" update=":formulario"/>
+                        </p:panelGrid>
+                        <p:dataTable id="eventsDT" var="matricula" value="#{matriculaVista.listaMatriculas}" selectionMode="single" selection="#{matriculaVista.selectedMatricula}" rowKey="#{matricula.matriculaPK}">
+                            <f:facet name="header">
+                                Matrículas
+                            </f:facet>
+                            <p:ajax event="rowSelect" listener="#{matriculaVista.onRowSelect}" update=":formulario" />
+                            <p:column headerText="Estudiante">
+                                <h:outputText value="#{matricula.estudiante.nombreestudiante} #{matricula.estudiante.apellidoestudiante}" />
+                            </p:column>
+
+                            <p:column headerText="Materia">
+                                <h:outputText value="#{matricula.materia.nombremateria}" />
+                            </p:column>
+
+                            <p:column headerText="Nota">
+                                <h:outputText value="#{matricula.nota}" />
+                            </p:column>
+
+                            <p:column headerText="Estado">
+                                <h:outputText value="#{matricula.estado}" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+

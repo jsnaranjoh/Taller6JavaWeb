@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Docentes</title>
+            </f:facet>
+            <style>
+                .ui-menu {
+                    width: 140px;
+                }
+            </style>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="50" resizable="true" closable="true" collapsible="true">
+                    GESTIÓN DE DOCENTES
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" header="Colapsar" collapsible="true">
+                    <h:form>
+                        <p:menu>
+                            <p:submenu label="Menú">
+                                <p:menuitem value="Carreras" url="../faces/gestionCarreras.xhtml" />
+                                <p:menuitem value="Docentes" url="../faces/gestionDocentes.xhtml" />
+                                <p:menuitem value="Materias" url="../faces/gestionMaterias.xhtml" />
+                                <p:menuitem value="Estudiantes" url="../faces/gestionEstudiantes.xhtml" />
+                                <p:menuitem value="Matrículas" url="../faces/gestionMatriculas.xhtml" />
+                            </p:submenu>
+                        </p:menu>
+                        <p:commandButton value="Cerrar Sesión" action="#{sesionVista.cerrarSesion_action}"/>
+                    </h:form>     
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:form id="formulario">
+                         <p:growl id="growl" showDetail="true" sticky="true" />
+                        <p:panelGrid columns="6">
+                            <f:facet name="informacion Docentes"></f:facet>
+                            <h:outputText value="Documento"/>
+                            <p:inputText id="txtNumero" binding="#{docenteVista.txtDocumento}"/>
+                            <h:outputText value="Nombre"/>
+                            <p:inputText id="txtNombre" binding="#{docenteVista.txtNombre}"/>
+                            <h:outputText value="Apellido"/>
+                            <p:inputText id="txtApellido" binding="#{docenteVista.txtApellido}"/>
+                            <h:outputText value="Correo"/>
+                            <p:inputText id="txtCorreo" binding="#{docenteVista.txtCorreo}"/>
+                            <h:outputText value="Profesión"/>
+                            <p:inputText id="txtProfesion" binding="#{docenteVista.txtProfesion}"/>
+                            <h:outputText value="Teléfono"/>
+                            <p:inputText id="txtTelefono" binding="#{docenteVista.txtTelefono}"/>
+                            <h:outputText value="Clave"/>
+                            <p:password id="txtClave" value="#{docenteVista.txtClave}"/>
+                        </p:panelGrid>
+                        <p:panelGrid columns="4">
+                            <p:commandButton value="Registrar" binding="#{docenteVista.btnRegistrar}" action="#{docenteVista.action_registrar()}" update=":formulario"/> 
+                            <p:commandButton value="Modificar" binding="#{docenteVista.btnModificar}" action="#{docenteVista.action_modificar()}" update=":formulario"/>
+                            <p:commandButton value="Eliminar" binding="#{docenteVista.btnEliminar}" action="#{docenteVista.action_eliminar()}" update=":formulario"/>
+                            <p:commandButton value="Limpiar" binding="#{docenteVista.btnLimpiar}" action="#{docenteVista.limpiar()}" update=":formulario"/>
+                        </p:panelGrid>
+                         <p:dataTable id="eventsDT" var="docente" value="#{docenteVista.listaDocentes}" selectionMode="single" selection="#{docenteVista.selectedDocente}" rowKey="#{docente.documentodocente}">
+                            <f:facet name="header">
+                                Docentes
+                            </f:facet>
+                            <p:ajax event="rowSelect" listener="#{docenteVista.onRowSelect}" update=":formulario" />
+                            <p:column headerText="Documento">
+                                <h:outputText value="#{docente.documentodocente}" />
+                            </p:column>
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{docente.nombredocente}" />
+                            </p:column>
+                             <p:column headerText="Apellido">
+                                 <h:outputText value="#{docente.apellidodocente}" />
+                            </p:column>
+                             <p:column headerText="Correo">
+                                 <h:outputText value="#{docente.correodocente}" />
+                            </p:column>
+                            <p:column headerText="Profesión">
+                                 <h:outputText value="#{docente.profesiondocente}" />
+                            </p:column>
+                            <p:column headerText="Teléfono">
+                                <h:outputText value="#{docente.telefonodocente}" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+

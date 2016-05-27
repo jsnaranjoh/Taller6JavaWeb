@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Estudiantes</title>
+            </f:facet>
+            <style>
+                .ui-menu {
+                    width: 140px;
+                }
+            </style>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="50" resizable="true" closable="true" collapsible="true">
+                    GESTIÓN DE ESTUDIANTES
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" header="Colapsar" collapsible="true">
+                    <h:form>
+                        <p:menu>
+                            <p:submenu label="Menú">
+                                <p:menuitem value="Carreras" url="../faces/gestionCarreras.xhtml" />
+                                <p:menuitem value="Docentes" url="../faces/gestionDocentes.xhtml" />
+                                <p:menuitem value="Materias" url="../faces/gestionMaterias.xhtml" />
+                                <p:menuitem value="Estudiantes" url="../faces/gestionEstudiantes.xhtml" />
+                                <p:menuitem value="Matrículas" url="../faces/gestionMatriculas.xhtml" />
+                            </p:submenu>
+                        </p:menu>
+                        <p:commandButton value="Cerrar Sesión" action="#{sesionVista.cerrarSesion_action}"/>
+                    </h:form>     
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:form id="formulario">
+                        <p:growl id="growl" showDetail="true" sticky="true" />
+                        <p:panelGrid columns="1">
+                            <p:fileUpload label="Importar Estudiantes" invalidFileMessage="El archivo debe ser de extensión .xls" fileUploadListener="#{estudianteVista.handleFileUpload}" mode="advanced"  update="formulario" auto="true" allowTypes="/(\.|\/)(xls)$/"/>
+                        </p:panelGrid>
+                        <p:panelGrid columns="6">
+                            <h:outputText value="Documento"/>
+                            <p:inputText id="txtNumero" binding="#{estudianteVista.txtDocumento}"/>
+                            <h:outputText value="Nombre"/>
+                            <p:inputText id="txtNombre" binding="#{estudianteVista.txtNombre}"/>
+                            <h:outputText value="Apellido"/>
+                            <p:inputText id="txtApellido" binding="#{estudianteVista.txtApellido}"/>
+                            <h:outputText value="Correo"/>
+                            <p:inputText id="txtCorreo" binding="#{estudianteVista.txtCorreo}"/>
+                            <h:outputText value="Semestre"/>
+                            <p:inputText id="txtSemestre" binding="#{estudianteVista.txtSemestre}"/>
+                            <h:outputText value="Clave"/>
+                            <p:password id="txtClave" value="#{estudianteVista.txtClave}"/>
+                        </p:panelGrid>
+                        <p:panelGrid columns="4">
+                            <p:commandButton value="Registrar" binding="#{estudianteVista.btnRegistrar}" action="#{estudianteVista.action_registrar()}" update=":formulario"/> 
+                            <p:commandButton value="Modificar" binding="#{estudianteVista.btnModificar}" action="#{estudianteVista.action_modificar()}" update=":formulario"/>
+                            <p:commandButton value="Eliminar" binding="#{estudianteVista.btnEliminar}" action="#{estudianteVista.action_eliminar()}" update=":formulario"/>
+                            <p:commandButton value="Limpiar" binding="#{estudianteVista.btnLimpiar}" action="#{estudianteVista.limpiar()}" update=":formulario"/>
+                        </p:panelGrid>
+                         <p:dataTable id="eventsDT" var="estudiante" value="#{estudianteVista.listaEstudiantes}" selectionMode="single" selection="#{estudianteVista.selectedEstudiante}" rowKey="#{estudiante.documentoestudiante}">
+                            <f:facet name="header">
+                                Estudiantes
+                            </f:facet>
+                            <p:ajax event="rowSelect" listener="#{estudianteVista.onRowSelect}" update=":formulario" />
+
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{estudiante.nombreestudiante}" />
+                            </p:column>
+                             <p:column headerText="Apellido">
+                                 <h:outputText value="#{estudiante.apellidoestudiante}" />
+                            </p:column>
+                             <p:column headerText="Correo">
+                                 <h:outputText value="#{estudiante.correoestudiante}" />
+                            </p:column>
+                             <p:column headerText="Semestre">
+                                 <h:outputText value="#{estudiante.semestreestudiante}" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+
