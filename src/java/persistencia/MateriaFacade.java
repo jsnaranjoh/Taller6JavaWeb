@@ -17,7 +17,7 @@ import modelo.Materia;
  */
 @Stateless
 public class MateriaFacade extends AbstractFacade<Materia> implements MateriaFacadeLocal {
-    @PersistenceContext(unitName = "Laboratorio6JavaPU")
+    @PersistenceContext(unitName = "Taller6JavaWebPU")
     private EntityManager em;
 
     @Override

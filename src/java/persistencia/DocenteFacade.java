@@ -19,7 +19,7 @@ import modelo.Docente;
  */
 @Stateless
 public class DocenteFacade extends AbstractFacade<Docente> implements DocenteFacadeLocal {
-    @PersistenceContext(unitName = "Laboratorio6JavaPU")
+    @PersistenceContext(unitName = "Taller6JavaWebPU")
     private EntityManager em;
 
     @Override
