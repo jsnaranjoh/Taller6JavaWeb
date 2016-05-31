@@ -5,8 +5,13 @@
  */
 package vista;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -15,10 +20,20 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.naming.NamingException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import logica.CarreraLogicaLocal;
 import logica.MateriaLogicaLocal;
+import logica.MatriculaLogicaLocal;
 import modelo.Carrera;
 import modelo.Materia;
+import modelo.Matricula;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
@@ -43,12 +58,16 @@ public class MateriaVista {
     private CommandButton btnModificar;
     private CommandButton btnEliminar;
     private CommandButton btnLimpiar;
-    
+    private CommandButton btnReporte;
+
     private List<Materia> listaMaterias;
     private Materia selectedMateria;
     
     @EJB
     private MateriaLogicaLocal materiaLogica;
+    
+    @EJB
+    private MatriculaLogicaLocal matriculaLogica;
     
     @EJB
     private CarreraLogicaLocal carreraLogica;
@@ -134,6 +153,14 @@ public class MateriaVista {
 
     public void setBtnLimpiar(CommandButton btnLimpiar) {
         this.btnLimpiar = btnLimpiar;
+    }
+    
+    public CommandButton getBtnReporte() {
+        return btnReporte;
+    }
+
+    public void setBtnReporte(CommandButton btnReporte) {
+        this.btnReporte = btnReporte;
     }
 
     public List<Materia> getListaMaterias() {
@@ -251,6 +278,31 @@ public class MateriaVista {
             
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error.", ex.getMessage()));
+        }
+    }
+    
+    public void generarReporteEstudiantesMatriculados() {
+        try {
+            List<Matricula> listaMatriculas = matriculaLogica.consultarxMateria(selectedMateria.getNumeromateria());
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("nombre", selectedMateria.getNombremateria());
+            File jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("reporte/reporteEstudiantesMatriculados.jasper"));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper.getPath(), parametros, new JRBeanCollectionDataSource(listaMatriculas));
+            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            response.addHeader("Content-disposition", "attachment; filename=reporte.pdf");
+            ServletOutputStream stream = response.getOutputStream();
+            JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+            FacesContext.getCurrentInstance().responseComplete();
+        } catch (NamingException ex) {
+            Logger.getLogger(MateriaVista.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(MateriaVista.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(MateriaVista.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MateriaVista.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(MateriaVista.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

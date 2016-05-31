@@ -31,6 +31,6 @@ public interface MatriculaFacadeLocal {
 
     int count();
     
-    List<Matricula> consultarMatriculaMateria(Integer codM);
+    List<Matricula> consultarxMateria(Integer numero);
     
 }

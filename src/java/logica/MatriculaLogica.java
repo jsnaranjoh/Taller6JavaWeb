@@ -116,6 +116,16 @@ public class MatriculaLogica implements MatriculaLogicaLocal {
             return matriculaDAO.find(codigo);
         }
     }
+    
+    @Override
+    public List<Matricula> consultarxMateria(Integer numero) throws Exception {
+        if(numero == 0 || numero == null){
+            throw new Exception("El número es Obligatorio.");
+        }
+        else{
+            return matriculaDAO.consultarxMateria(numero);
+        }
+    }
 
     @Override
     public List<Matricula> consultarTodas() throws Exception {

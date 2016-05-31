@@ -65,6 +65,7 @@
                             <p:commandButton value="Modificar" binding="#{materiaVista.btnModificar}" action="#{materiaVista.action_modificar()}" update=":formulario"/>
                             <p:commandButton value="Eliminar" binding="#{materiaVista.btnEliminar}" action="#{materiaVista.action_eliminar()}" update=":formulario"/>
                             <p:commandButton value="Limpiar" binding="#{materiaVista.btnLimpiar}" action="#{materiaVista.limpiar()}" update=":formulario"/>
+                            <p:commandButton value="Reporte" binding="#{materiaVista.btnReporte}" action="#{materiaVista.generarReporteEstudiantesMatriculados()}" update=":formulario"/>
                         </p:panelGrid>
                         <p:dataTable id="eventsDT" var="materia" value="#{materiaVista.listaMaterias}" selectionMode="single" selection="#{materiaVista.selectedMateria}" rowKey="#{materia.numeromateria}">
                             <f:facet name="header">

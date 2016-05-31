@@ -19,6 +19,7 @@ public interface MatriculaLogicaLocal {
     public void modificarMatricula(Matricula matricula) throws Exception;
     public void eliminarMatricula(Matricula matricula) throws Exception;
     public Matricula consultarxCodigo (Integer codigo) throws Exception;
+    public List<Matricula> consultarxMateria (Integer numero) throws Exception;
     public List<Matricula> consultarTodas() throws Exception;
     public String importarMatriculas(String archivo) throws Exception;
 }

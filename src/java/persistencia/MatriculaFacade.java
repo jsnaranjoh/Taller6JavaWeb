@@ -32,9 +32,9 @@ public class MatriculaFacade extends AbstractFacade<Matricula> implements Matric
     }
 
     @Override
-    public List<Matricula> consultarMatriculaMateria(Integer codM) {
-        String consulta = "select m from Matricula m where m.materia.numeromateria="+codM;
-        Query query = em.createNamedQuery(consulta);
+    public List<Matricula> consultarxMateria(Integer numero) {
+        String consulta = "SELECT m FROM Matricula m WHERE m.materia.numeromateria='"+numero+"'";
+        Query query = em.createQuery(consulta);
         return query.getResultList();
     }
     

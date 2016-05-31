@@ -37,10 +37,10 @@ public class IndexFiltro implements Filter{
         {
             if(tipo.equals("docente"))
             {
-               ((HttpServletResponse)response).sendRedirect("/Laboratorio6Java/faces/gestionDocentes.xhtml");
+               ((HttpServletResponse)response).sendRedirect("/Taller6JavaWeb/faces/gestionDocentes.xhtml");
             }else{
                 if(tipo.equals("estudiante")){  
-                    ((HttpServletResponse)response).sendRedirect("/Laboratorio6Java/faces/gestionEstudiantes.xhtml");
+                    ((HttpServletResponse)response).sendRedirect("/Taller6JavaWeb/faces/gestionEstudiantes.xhtml");
                 }else{
                     chain.doFilter(request, response);
                 }
